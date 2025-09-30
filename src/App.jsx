@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { HashRouter, Routes, Route, Link } from 'react-router-dom'
 import './App.css'
 import logo from './assets/nam-logo.png'
 import heroImage from './assets/image-1.jpeg'
@@ -813,7 +813,7 @@ function App() {
   }, [])
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <TopStripe />
       <Navbar />
       <Routes>
@@ -905,7 +905,7 @@ function App() {
           <span className="tawk-text">Canlı Destek</span>
         </div>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
