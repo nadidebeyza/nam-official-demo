@@ -904,6 +904,131 @@ function ProductPage() {
   )
 }
 
+function PasswordProtection() {
+  const [password, setPassword] = React.useState('')
+  const [isAuthenticated, setIsAuthenticated] = React.useState(() => {
+    if (typeof window === 'undefined') return false
+    return sessionStorage.getItem('nam_auth') === '1'
+  })
+  const [error, setError] = React.useState('')
+  const FIXED_PASSCODE = 'olhxev'
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (password === FIXED_PASSCODE) {
+      setIsAuthenticated(true)
+      sessionStorage.setItem('nam_auth', '1')
+      setError('')
+    } else {
+      setError('Yanlış şifre. Lütfen tekrar deneyin.')
+      setPassword('')
+    }
+  }
+
+  if (isAuthenticated) {
+    return null
+  }
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: 'linear-gradient(135deg, #f8f0f0 0%, #f0e6e6 100%)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 9999,
+      fontFamily: 'Nunito, sans-serif'
+    }}>
+      <div style={{
+        background: 'white',
+        padding: '3rem 2.5rem',
+        borderRadius: '20px',
+        boxShadow: '0 20px 60px rgba(0,0,0,0.15)',
+        textAlign: 'center',
+        maxWidth: '400px',
+        width: '90%'
+      }}>
+        <div style={{ marginBottom: '2rem' }}>
+          <img src={logo} alt="NAM Logo" style={{ height: '60px', marginBottom: '1rem' }} />
+          <h1 style={{ 
+            fontFamily: 'Playfair Display, serif', 
+            fontSize: '1.8rem', 
+            color: '#2b2b2b',
+            marginBottom: '0.5rem'
+          }}>
+            NAM Official
+          </h1>
+          <p style={{ color: '#5a4a4a', fontSize: '0.95rem' }}>
+            Siteye erişim için şifre gerekli
+          </p>
+        </div>
+        
+        <form onSubmit={handleSubmit}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Şifre girin"
+              style={{
+                width: '100%',
+                padding: '0.8rem 1rem',
+                border: '2px solid #e0e0e0',
+                borderRadius: '12px',
+                fontSize: '1rem',
+                outline: 'none',
+                transition: 'border-color 0.3s ease'
+              }}
+              onFocus={(e) => e.target.style.borderColor = '#d4a5a5'}
+              onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
+            />
+            {error && (
+              <p style={{ 
+                color: '#e74c3c', 
+                fontSize: '0.85rem', 
+                marginTop: '0.5rem',
+                marginBottom: 0
+              }}>
+                {error}
+              </p>
+            )}
+          </div>
+          
+          <button
+            type="submit"
+            style={{
+              width: '100%',
+              padding: '0.8rem 1.5rem',
+              background: 'linear-gradient(45deg, #d4a5a5, #c49595)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = 'translateY(-2px)'
+              e.target.style.boxShadow = '0 8px 25px rgba(212, 165, 165, 0.3)'
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = 'none'
+            }}
+          >
+            Giriş Yap
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
+
 function App() {
   React.useEffect(() => {
     const widget = document.getElementById('tawk-widget')
@@ -923,99 +1048,102 @@ function App() {
   }, [])
 
   return (
-    <HashRouter>
-      <TopStripe />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/urun/:slug" element={<ProductPage />} />
-        <Route path="/urunler" element={<AllProductsPage />} />
-        <Route path="/kampanyalar" element={<PlaceholderPage title="Kampanyalar" />} />
-        <Route path="/siparis-takibi" element={<PlaceholderPage title="Sipariş Takibi" />} />
-        <Route path="/yeni-gelenler" element={<PlaceholderPage title="Yeni Gelenler" />} />
-        <Route path="/hesabim" element={<PlaceholderPage title="Hesabım" />} />
-        <Route path="/favorilerim" element={<PlaceholderPage title="Favorilerim" />} />
-        <Route path="/sepetim" element={<PlaceholderPage title="Sepetim" />} />
-      </Routes>
-      <footer className="footer">
-        <div className="container">
-          <div className="row g-4">
-            <div className="col-12 col-md-4">
-              <div className="footer-brand">
-                <div className="footer-logo">
-                  <img src={logo} alt="NAM Logo" className="footer-logo-img" />
-                  <span className="footer-brand-text">NAM OFFICIAL</span>
+    <>
+      <PasswordProtection />
+      <HashRouter>
+        <TopStripe />
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/urun/:slug" element={<ProductPage />} />
+          <Route path="/urunler" element={<AllProductsPage />} />
+          <Route path="/kampanyalar" element={<PlaceholderPage title="Kampanyalar" />} />
+          <Route path="/siparis-takibi" element={<PlaceholderPage title="Sipariş Takibi" />} />
+          <Route path="/yeni-gelenler" element={<PlaceholderPage title="Yeni Gelenler" />} />
+          <Route path="/hesabim" element={<PlaceholderPage title="Hesabım" />} />
+          <Route path="/favorilerim" element={<PlaceholderPage title="Favorilerim" />} />
+          <Route path="/sepetim" element={<PlaceholderPage title="Sepetim" />} />
+        </Routes>
+        <footer className="footer">
+          <div className="container">
+            <div className="row g-4">
+              <div className="col-12 col-md-4">
+                <div className="footer-brand">
+                  <div className="footer-logo">
+                    <img src={logo} alt="NAM Logo" className="footer-logo-img" />
+                    <span className="footer-brand-text">NAM OFFICIAL</span>
+                  </div>
+                  <p className="footer-description">
+                    Modern yaşamın dinamiklerine uygun, 
+                    zarif ve kaliteli tasarımlar.
+                  </p>
                 </div>
-                <p className="footer-description">
-                  Modern yaşamın dinamiklerine uygun, 
-                  zarif ve kaliteli tasarımlar.
-                </p>
+              </div>
+              <div className="col-12 col-md-2">
+                <h5 className="footer-title">Kurumsal</h5>
+                <ul className="footer-links">
+                  <li><a href="/hakkimizda">Hakkımızda</a></li>
+                  <li><a href="/iletisim">İletişim</a></li>
+                  <li><a href="/kariyer">Kariyer</a></li>
+                </ul>
+              </div>
+              <div className="col-12 col-md-2">
+                <h5 className="footer-title">Müşteri</h5>
+                <ul className="footer-links">
+                  <li><a href="/siparis-takip">Sipariş Takip</a></li>
+                  <li><a href="/iade-degisim">İade & Değişim</a></li>
+                  <li><a href="/sss">S.S.S</a></li>
+                </ul>
+              </div>
+              <div className="col-12 col-md-2">
+                <h5 className="footer-title">Yasal</h5>
+                <ul className="footer-links">
+                  <li><a href="/gizlilik">Gizlilik Politikası</a></li>
+                  <li><a href="/kullanim-kosullari">Kullanım Koşulları</a></li>
+                  <li><a href="/kvkk">KVKK</a></li>
+                </ul>
+              </div>
+              <div className="col-12 col-md-2">
+                <h5 className="footer-title">Sosyal Medya</h5>
+                <div className="social-links">
+                  <a href="#" className="social-link">Instagram</a>
+                  <a href="#" className="social-link">Facebook</a>
+                  <a href="#" className="social-link">Twitter</a>
+                </div>
               </div>
             </div>
-            <div className="col-12 col-md-2">
-              <h5 className="footer-title">Kurumsal</h5>
-              <ul className="footer-links">
-                <li><a href="/hakkimizda">Hakkımızda</a></li>
-                <li><a href="/iletisim">İletişim</a></li>
-                <li><a href="/kariyer">Kariyer</a></li>
-              </ul>
-            </div>
-            <div className="col-12 col-md-2">
-              <h5 className="footer-title">Müşteri</h5>
-              <ul className="footer-links">
-                <li><a href="/siparis-takip">Sipariş Takip</a></li>
-                <li><a href="/iade-degisim">İade & Değişim</a></li>
-                <li><a href="/sss">S.S.S</a></li>
-              </ul>
-            </div>
-            <div className="col-12 col-md-2">
-              <h5 className="footer-title">Yasal</h5>
-              <ul className="footer-links">
-                <li><a href="/gizlilik">Gizlilik Politikası</a></li>
-                <li><a href="/kullanim-kosullari">Kullanım Koşulları</a></li>
-                <li><a href="/kvkk">KVKK</a></li>
-              </ul>
-            </div>
-            <div className="col-12 col-md-2">
-              <h5 className="footer-title">Sosyal Medya</h5>
-              <div className="social-links">
-                <a href="#" className="social-link">Instagram</a>
-                <a href="#" className="social-link">Facebook</a>
-                <a href="#" className="social-link">Twitter</a>
-              </div>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <div className="row align-items-center">
-              <div className="col-12 col-md-6">
-                <p className="copyright">© {new Date().getFullYear()} NAM Official. Tüm hakları saklıdır.</p>
-              </div>
-              <div className="col-12 col-md-6">
-                <div className="payment-methods">
-                  <span>Güvenli Ödeme:</span>
-                  <div className="payment-icons">
-                    <img src="https://connect.endeavor.org.tr/wp-content/uploads/2020/07/iyzico-1-1170x877.jpg" alt="iyzico" style={{height: '40px', marginRight: '8px'}} />
+            <div className="footer-bottom">
+              <div className="row align-items-center">
+                <div className="col-12 col-md-6">
+                  <p className="copyright">© {new Date().getFullYear()} NAM Official. Tüm hakları saklıdır.</p>
+                </div>
+                <div className="col-12 col-md-6">
+                  <div className="payment-methods">
+                    <span>Güvenli Ödeme:</span>
+                    <div className="payment-icons">
+                      <img src="https://connect.endeavor.org.tr/wp-content/uploads/2020/07/iyzico-1-1170x877.jpg" alt="iyzico" style={{height: '40px', marginRight: '8px'}} />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </footer>
-      
-      {/* Tawk.to Chat Widget */}
-      <div id="tawk-widget" className="tawk-widget">
-        <div className="tawk-chat-button" onClick={() => window.tawk && window.tawk.toggle()}>
-          <div className="tawk-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z" fill="currentColor"/>
-              <path d="M7 9H17V11H7V9ZM7 12H15V14H7V12Z" fill="currentColor"/>
-            </svg>
+        </footer>
+        
+        {/* Tawk.to Chat Widget */}
+        <div id="tawk-widget" className="tawk-widget">
+          <div className="tawk-chat-button" onClick={() => window.tawk && window.tawk.toggle()}>
+            <div className="tawk-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z" fill="currentColor"/>
+                <path d="M7 9H17V11H7V9ZM7 12H15V14H7V12Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <span className="tawk-text">Canlı Destek</span>
           </div>
-          <span className="tawk-text">Canlı Destek</span>
         </div>
-      </div>
-    </HashRouter>
+      </HashRouter>
+    </>
   )
 }
 
