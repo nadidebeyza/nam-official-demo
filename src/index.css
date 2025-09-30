@@ -1493,7 +1493,7 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 100vh;
   width: 100%;
   margin-top: 0; /* Ensure hero starts flush under header */
-  padding-top: 10%;
+  padding-top: 0; /* Remove padding to ensure equal heights */
 }
 .hero-col { position: relative; overflow: hidden; height: 100%; }
 .hero-col img {
@@ -1590,7 +1590,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-triptych { height: calc(100vh - var(--top-stripe-height, 36px) - var(--navbar-height, 64px)); }
 .hero-center-overlay { display: grid; place-items: center; }
 /* Remove extra top padding if present */
-.hero-triptych { padding-top: 10% !important; }
+.hero-triptych { padding-top: 0 !important; }
 
 /* Disable any leftover sparkle elements */
 .sparkles,

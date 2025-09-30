@@ -8,6 +8,7 @@
     "server": "node server.js",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "vite build",
+    "build:deploy": "vite build && cp index-deploy.html dist/index.html",
     "lint": "eslint .",
     "preview": "vite preview"
   },
