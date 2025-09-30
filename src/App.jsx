@@ -377,12 +377,16 @@ function AllProductsPage() {
     return p
   }, [allProducts, query, category, price, sizes, colors, stock, sort])
 
-  const [filtersOpen, setFiltersOpen] = React.useState(false)
+  const [filtersOpen, setFiltersOpen] = React.useState(() => (typeof window !== 'undefined' ? window.innerWidth >= 992 : false))
   React.useEffect(() => {
-    const update = () => setFiltersOpen(window.innerWidth >= 992)
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        setFiltersOpen(true) // auto-open on desktop widths
+      }
+      // do NOT force-close on smaller widths; preserve user's choice
+    }
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (

@@ -897,8 +897,9 @@ h1, h2, h3, h4, h5, h6 {
 .nl-btn { border-radius: 28px; padding: 0.8rem 1.4rem; }
 @media (max-width: 768px) {
   .newsletter-card { grid-template-columns: 1fr; }
-  .nl-form { width: 100%; }
+  .nl-form { width: 100%; flex-direction: column; }
   .nl-input { flex: 1; min-width: 0; }
+  .nl-btn { width: 100%; }
 }
 
 .about-content-creative {
