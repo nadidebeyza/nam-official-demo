@@ -64,11 +64,43 @@ function Navbar() {
             <img src={logo} alt="NAM Official Logo" className="logo-img" />
           </div>
         </Link>
-        <button className="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
+        {/* Mobile search with animated placeholder (same as desktop) */}
+        <form className="navbar-search-mobile d-flex d-lg-none flex-grow-1 px-2" role="search" onSubmit={(e)=> e.preventDefault()}>
+          <div className="search-input-container w-100">
+            <input className="form-control" type="search" placeholder="" aria-label="Ürün ara" />
+            <div className="search-placeholder-animation">
+              <span className="search-text">Ceket...</span>
+              <span className="search-text">Elbise...</span>
+              <span className="search-text">Etek...</span>
+            </div>
+          </div>
+        </form>
+        <button
+          className="navbar-toggler border-0 ms-auto"
+          type="button"
+          aria-label="Menüyü aç/kapat"
+          onClick={() => {
+            const cls = document.body.classList
+            if (cls.contains('menu-open')) {
+              cls.remove('menu-open')
+              document.body.style.overflow = ''
+            } else {
+              cls.add('menu-open')
+              document.body.style.overflow = 'hidden'
+            }
+          }}
+        >
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
         </button>
-        <div className="collapse navbar-collapse" id="navContent">
-          <form className="navbar-search ms-lg-4 my-2 my-lg-0" role="search">
+        <div className="collapse navbar-collapse" id="navContent" onClick={() => {
+          if (document.body.classList.contains('menu-open')) {
+            document.body.classList.remove('menu-open')
+            document.body.style.overflow = ''
+          }
+        }}>
+          <form className="navbar-search ms-lg-4 my-2 my-lg-0 d-none d-lg-block" role="search">
             <div className="search-input-container">
               <input className="form-control" type="search" placeholder="" aria-label="Ürün ara" />
               <div className="search-placeholder-animation">
@@ -89,24 +121,24 @@ function Navbar() {
               <Link className="nav-link px-3" to="/siparis-takibi">Sipariş Takibi</Link>
             </li>
             <li className="nav-item products-dropdown dropdown">
-              <a className="nav-link px-3 dropdown-toggle" href="#urunler" role="button" aria-haspopup="true" aria-expanded="false">Ürünler</a>
+              <Link className="nav-link px-3 dropdown-toggle" to="/urunler" role="button" aria-haspopup="true" aria-expanded="false">Ürünler</Link>
               <ul className="dropdown-menu">
                 <li><Link className="dropdown-item" to="/urunler">Tüm Ürünler</Link></li>
-                <li><a className="dropdown-item" href="#yeni-gelenler">Yeni Gelenler</a></li>
-                <li><a className="dropdown-item" href="#kategori-elbise">Elbise</a></li>
-                <li><a className="dropdown-item" href="#kategori-etek">Etek</a></li>
-                <li><a className="dropdown-item" href="#kategori-ceket">Ceket</a></li>
-                <li><a className="dropdown-item" href="#kategori-bluz">Bluz</a></li>
-                <li><a className="dropdown-item" href="#kategori-gomlek">Gömlek</a></li>
-                <li><a className="dropdown-item" href="#kategori-tunik">Tunik</a></li>
-                <li><a className="dropdown-item" href="#kategori-triko">Triko</a></li>
-                <li><a className="dropdown-item" href="#kategori-sweatshirt">Sweatshirt</a></li>
-                <li><a className="dropdown-item" href="#kategori-tshirt">T‑Shirt</a></li>
-                <li><a className="dropdown-item" href="#kategori-pantolon">Pantolon</a></li>
-                <li><a className="dropdown-item" href="#kategori-jean">Jean</a></li>
-                <li><a className="dropdown-item" href="#kategori-takim">Takım</a></li>
-                <li><a className="dropdown-item" href="#kategori-disgiyim">Dış Giyim</a></li>
-                <li><a className="dropdown-item" href="#kategori-aksesuar">Aksesuar</a></li>
+                <li><Link className="dropdown-item" to="/urunler">Yeni Gelenler</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Elbise</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Etek</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Ceket</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Bluz</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Gömlek</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Tunik</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Triko</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Sweatshirt</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">T‑Shirt</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Pantolon</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Jean</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Takım</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Dış Giyim</Link></li>
+                <li><Link className="dropdown-item" to="/urunler">Aksesuar</Link></li>
               </ul>
             </li>
             <li className="nav-item">
@@ -153,10 +185,20 @@ function HomePage() {
             <h1 className="hero-title">Tarzını Yansıtan Koleksiyon</h1>
             <h2 className="hero-subtitle">Gardırobundaki her parça senin hikâyeni anlatır. Kendi stilini keşfet, kombinlerini özgürce oluştur ve tarzını dünyaya yansıt.</h2>
             <div className="hero-actions">
-              <a href="#featured" className="btn btn-romantic">
+              <button
+                type="button"
+                className="btn btn-romantic"
+                aria-controls="featured"
+                onClick={() => {
+                  const el = document.getElementById('featured')
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+              >
                 <span>Koleksiyonu keşfet</span>
                 <div className="btn-shine"></div>
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -335,6 +377,14 @@ function AllProductsPage() {
     return p
   }, [allProducts, query, category, price, sizes, colors, stock, sort])
 
+  const [filtersOpen, setFiltersOpen] = React.useState(false)
+  React.useEffect(() => {
+    const update = () => setFiltersOpen(window.innerWidth >= 992)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
   return (
     <main className="all-products-page">
       <header className="all-products-hero">
@@ -345,7 +395,9 @@ function AllProductsPage() {
       </header>
       <div className="container all-products-container">
         <aside className="filters-panel">
-          <div className="filters-header">Filtreler</div>
+          <details className="filters-collapse" open={filtersOpen} onToggle={(e)=> setFiltersOpen(e.currentTarget.open)}>
+            <summary className="filters-header">Filtreler</summary>
+            <div className="filters-body">
 
           <div className="filter-block">
             <label className="filter-label">Ara</label>
@@ -469,6 +521,8 @@ function AllProductsPage() {
             <button className="link-reset" type="button" onClick={resetFilters}>Filtreleri Sıfırla</button>
             <button className="btn btn-apply" type="button">Uygula</button>
           </div>
+            </div>
+          </details>
         </aside>
 
         <section className="products-panel">
@@ -527,6 +581,41 @@ function ProductPage() {
   const prevImage = () => setActiveIndex((i) => (i - 1 + images.length) % images.length)
   const nextImage = () => setActiveIndex((i) => (i + 1) % images.length)
 
+  const [isZoomed, setIsZoomed] = React.useState(false)
+  const lensRef = React.useRef(null)
+  const imgRef = React.useRef(null)
+  const ZOOM = 2.5
+  const onMove = (e) => {
+    const wrapper = e.currentTarget
+    const rect = wrapper.getBoundingClientRect()
+    const relX = e.clientX - rect.left
+    const relY = e.clientY - rect.top
+    if (!imgRef.current || !lensRef.current) return
+
+    // Position the lens centered at cursor
+    const lensSize = lensRef.current.offsetWidth
+    lensRef.current.style.left = `${Math.max(0, Math.min(rect.width - lensSize, relX - lensSize / 2))}px`
+    lensRef.current.style.top = `${Math.max(0, Math.min(rect.height - lensSize, relY - lensSize / 2))}px`
+
+    // Map cursor position on displayed image to natural image pixels
+    const natural = {
+      width: imgRef.current.naturalWidth || rect.width,
+      height: imgRef.current.naturalHeight || rect.height,
+    }
+    const scaleX = natural.width / rect.width
+    const scaleY = natural.height / rect.height
+    const natX = relX * scaleX
+    const natY = relY * scaleY
+
+    // Set lens background image (use current image src)
+    lensRef.current.style.backgroundImage = `url(${imgRef.current.src})`
+    lensRef.current.style.backgroundSize = `${natural.width * ZOOM}px ${natural.height * ZOOM}px`
+    // Center the cursor point inside the lens
+    const bgPosX = -(natX * ZOOM - lensSize / 2)
+    const bgPosY = -(natY * ZOOM - lensSize / 2)
+    lensRef.current.style.backgroundPosition = `${bgPosX}px ${bgPosY}px`
+  }
+
   // Reviews state (demo; no backend)
   const [reviews, setReviews] = React.useState([
     { id: 1, name: 'Selin', rating: 5, text: 'Kalitesi harika, kalıp tam oldu.', photos: [], date: '2025-09-01' },
@@ -569,10 +658,27 @@ function ProductPage() {
   }
   return (
     <main className="product-page">
+      {/* Mobile breadcrumb above image */}
+      <nav className="product-breadcrumb product-breadcrumb-mobile" aria-label="breadcrumb">
+        <Link to="/" className="text-muted">Anasayfa</Link>
+        <span className="bc-sep">/</span>
+        <Link to="/urunler" className="text-muted">Tüm Ürünler</Link>
+        <span className="bc-sep">/</span>
+        <a href="#" className="text-muted">{product.category}</a>
+        <span className="bc-sep">/</span>
+        <span className="text-current">{product.name}</span>
+      </nav>
+
       <div className="product-container">
         <div className="product-gallery">
-          <div className="main-image zoomable">
-            <img src={images[activeIndex]} alt="Ürün Detay" />
+          <div
+            className={`main-image zoomable`}
+            onMouseEnter={() => setIsZoomed(true)}
+            onMouseLeave={() => setIsZoomed(false)}
+            onMouseMove={onMove}
+          >
+            <img ref={imgRef} src={images[activeIndex]} alt="Ürün Detay" />
+            <div ref={lensRef} className={`magnifier-lens ${isZoomed ? 'visible' : ''}`} />
             {activeIndex > 0 && (
               <button type="button" className="gallery-arrow prev" aria-label="Önceki" onClick={prevImage}>‹</button>
             )}
